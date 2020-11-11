@@ -1,0 +1,13 @@
+.App {
+  display: grid;
+  place-items: center;
+}
+
+.pagination-list {
+  list-style: none;
+}
+
+.pagination-list li {
+  display: inline-block;
+  padding:10px;
+}
