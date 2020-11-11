@@ -120,7 +120,7 @@ function App() {
       // temporary data
       'templateData': table.body.slice(((page - 1) * noOfItems), ((page) * noOfItems)),
       // No of item per page
-      'noOfItems': typeof noOfItems == 'sting' ? +noOfItems : noOfItems,
+      'noOfItems': typeof noOfItems == 'string' ? +noOfItems : noOfItems,
       // pagination array
       'pagination': Array.from(Array(Math.ceil(tableBody.length / noOfItems)).keys()),
     };
