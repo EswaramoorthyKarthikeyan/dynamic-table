@@ -1,6 +1,6 @@
 
 import './App.css';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 
 function App() {
@@ -113,7 +113,6 @@ function App() {
 
   // page navigation function
   function pageNav(page, pageChange = false, noOfItems = table.noOfItems) {
-
     let finalObj = {
       'itemsPerPage': noOfItems,
       'currentPage': page,
@@ -122,53 +121,66 @@ function App() {
       'pagination': Array.from(Array(Math.ceil(tableBody.length / noOfItems)).keys()),
     };
     return (pageChange === false) ? finalObj : setTemplateData(finalObj);
+
   }
 
   return (
     <div className="App">
-      <div className="">
-        <select onChange={(e) => pageNav(templateData.currentPage, true, e.target.value)}>
-          <option value="1"> 1 </option>
-          <option value="2"> 2 </option>
-          <option value="5"> 5 </option>
-        </select>
-      </div>
+      <div className="container">
+        <h3>Dynamic table</h3>
+        <div className="filter-group">
+          <select onChange={(e) => pageNav(templateData.currentPage, true, e.target.value)}>
+            <option value="1"> 1 </option>
+            <option value="2"> 2 </option>
+            <option value="5"> 5 </option>
+          </select>
 
+          <div className="">
+            <input className="" type="text" name="search" id="search" placeholder="search" autoComplete="no" />
+          </div>
+        </div>
+        <table className="table" cellPadding="10px">
+          <thead>
+            <tr>
+              {Header}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              templateData.templateData.map((bodyData, rowIndex) => {
+                return <tr key={rowIndex}>
+                  {
+                    tableHeader.map((head, dataIndex) => {
+                      return <td key={`${rowIndex}${dataIndex}`}> {bodyData[head.template_name]} </td>
+                    })
+                  }
+                </tr>
+              })}
+          </tbody>
+        </table>
 
-      <table cellSpacing="20px" cellPadding="10px">
-        <thead>
-          <tr>
-            {Header}
-          </tr>
-        </thead>
-        <tbody>
-          {
-            templateData.templateData.map((bodyData, rowIndex) => {
-              return <tr key={rowIndex}>
-                {
-                  tableHeader.map((head, dataIndex) => {
-                    return <td key={`${rowIndex}${dataIndex}`}> {bodyData[head.template_name]} </td>
-                  })
-                }
-              </tr>
-            })}
-        </tbody>
-      </table>
+        <div className="filter-group">
 
-      <div className="">
-        <ul className="pagination-list">
-          {
-            templateData.pagination.map((page, pageIndex) => {
-              return <li key={pageIndex} onClick={() => pageNav(page + 1, true, templateData.itemsPerPage)} > {page + 1} </li>
-            })
-          }
-        </ul>
+          <div className="">
+            Showing {templateData.currentPage} to {templateData.currentPage * templateData.itemsPerPage} of {tableBody.length}
+          </div>
 
-        <input type="number" name="jump_to_page" id="jump_to_page" onChange={(e) => jumptoPage(e)} max={tableBody.length / table.noOfItems} min="1" placeholder="Jump to page" />
+          <ul className="pagination-list">
+            {
+              templateData.pagination.map((page, pageIndex) => {
+                return <li key={pageIndex} onClick={() => pageNav(page + 1, true, templateData.itemsPerPage)} > {page + 1} </li>
+              })
+            }
+          </ul>
+          <div className="">
+            <input type="number" name="jump_to_page" id="jump_to_page" onChange={(e) => jumptoPage(e)} max={tableBody.length / table.noOfItems} min="1" placeholder="Jump to page" />
+          </div>
 
-      </div>
-          Showing {templateData.currentPage} to { templateData.currentPage * templateData.itemsPerPage} of {tableBody.length}
-    </div >
+        </div>
+
+      </div >
+    </div>
+
   );
 }
 

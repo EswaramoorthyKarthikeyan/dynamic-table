@@ -44,16 +44,17 @@
       "last 1 safari version"
     ]
   },
-  "license":"GPL3",
-  "author":{ 
-    "name" : "Eswaramoorthy Karthikeyan",
-    "email" : "eswarkarthik95@gmail.com",
-    "url" : "https://github.com/EswaramoorthyKarthikeyan"
-    },
-  "contributors": [{
-    "name":"aghontpi",
-    "email":"aghontpi@gmail.com",
-    "url":"https://github.com/aghontpi"
-  }]
-
+  "license": "GPL3",
+  "author": {
+    "name": "Eswaramoorthy Karthikeyan",
+    "email": "eswarkarthik95@gmail.com",
+    "url": "https://github.com/EswaramoorthyKarthikeyan"
+  },
+  "contributors": [
+    {
+      "name": "aghontpi",
+      "email": "aghontpi@gmail.com",
+      "url": "https://github.com/aghontpi"
+    }
+  ]
 }
