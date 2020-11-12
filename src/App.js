@@ -117,11 +117,8 @@ function App() {
     let finalObj = {
       'itemsPerPage': noOfItems,
       'currentPage': page,
-      // temporary data
       'templateData': table.body.slice(((page - 1) * noOfItems), ((page) * noOfItems)),
-      // No of item per page
       'noOfItems': typeof noOfItems == 'string' ? +noOfItems : noOfItems,
-      // pagination array
       'pagination': Array.from(Array(Math.ceil(tableBody.length / noOfItems)).keys()),
     };
     return (pageChange === false) ? finalObj : setTemplateData(finalObj);
