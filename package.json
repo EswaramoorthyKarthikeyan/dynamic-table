@@ -1,7 +1,16 @@
 {
-  "name": "dynamic-table",
+  "name": "dynamic-table-react",
   "version": "0.1.0-alpha.1",
-  "private": true,
+  "description": "dynamic table component for react",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EswaramoorthyKarthikeyan/dynamic-table.git"
+  },
+  "keywords": [
+    "table",
+    "react",
+    "javascript"
+  ],
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -34,5 +43,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "license":"GPL3",
+  "author":{ 
+    "name" : "Eswaramoorthy Karthikeyan",
+    "email" : "eswarkarthik95@gmail.com",
+    "url" : "https://github.com/EswaramoorthyKarthikeyan"
+    },
+  "contributors": [{
+    "name":"aghontpi",
+    "email":"aghontpi@gmail.com",
+    "url":"https://github.com/aghontpi"
+  }]
+
 }
