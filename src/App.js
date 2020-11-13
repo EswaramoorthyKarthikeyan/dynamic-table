@@ -119,7 +119,8 @@ function App() {
   }, [])
 
   // Jump to page function
-  function jumptoPage(event) {
+
+  const jumptoPage = (event) => {
     const targetValue = parseInt(event.target.value)
     targetValue &&
       targetValue !== templateData.currentPage &&
@@ -183,9 +184,8 @@ function App() {
 
         <div className="filter-group">
           <div className="">
-            {`Showing ${templateData.currentPage} to ${templateData.currentPage * templateData.itemsPerPage} of ${
-              tableBody.length
-            }`}
+            {`Showing ${((templateData.currentPage * templateData.itemsPerPage) - templateData.itemsPerPage) + 1} to ${templateData.currentPage * templateData.itemsPerPage} of ${tableBody.length
+              }`}
           </div>
 
           <ul className="pagination-list">

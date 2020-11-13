@@ -17,10 +17,11 @@
 .pagination-list li {
   display: inline-block;
   padding: 3px 10px;
-  background: #fbfbfb;
+  background: #ffffff;
   margin: 0px 3px;
   cursor: pointer;
   border-radius: 5px;
+  box-shadow: 2px 2px 4px rgb(241 241 241);
 }
 
 .filter-group {
