@@ -121,7 +121,7 @@ function App() {
   // Jump to page function
 
   const jumptoPage = (event) => {
-    const targetValue = parseInt(event.target.value);
+    const targetValue = parseInt(event.target.value)
     targetValue &&
       targetValue !== templateData.currentPage &&
       setTemplateData((prev) => {
@@ -151,7 +151,7 @@ function App() {
                   ...prev,
                   itemsPerPage: itemsPerPage,
                   templateData: templateDataBuilder(itemsPerPage, prev.currentPage),
-                  pagination: Array.from(Array(Math.ceil(tableBody.length / itemsPerPage)).keys())
+                  pagination: Array.from(Array(Math.ceil(tableBody.length / itemsPerPage)).keys()),
                 }
               })
             }}
@@ -185,31 +185,40 @@ function App() {
 
         <div className="filter-group">
           <div className="">
-            {`Showing ${((templateData.currentPage * templateData.itemsPerPage) - templateData.itemsPerPage) + 1} to ${templateData.currentPage * templateData.itemsPerPage} of ${tableBody.length
-              }`}
+            {`Showing ${templateData.currentPage * templateData.itemsPerPage - templateData.itemsPerPage + 1} 
+            to `}
+            {templateData.currentPage * templateData.itemsPerPage <= tableBody.length
+              ? templateData.currentPage * templateData.itemsPerPage
+              : tableBody.length}{" "}
+            {`of
+            ${tableBody.length}`}
           </div>
 
           <ul className="pagination-list">
-            <li onClick={() =>
-              setTemplateData((prev) => {
-                return {
-                  ...prev,
-                  currentPage: 1,
-                  templateData: templateDataBuilder(prev.itemsPerPage, 1),
-                }
-              })
-            }>
+            <li
+              onClick={() =>
+                setTemplateData((prev) => {
+                  return {
+                    ...prev,
+                    currentPage: 1,
+                    templateData: templateDataBuilder(prev.itemsPerPage, 1),
+                  }
+                })
+              }
+            >
               {`First`}
             </li>
-            <li onClick={() =>
-              setTemplateData((prev) => {
-                return {
-                  ...prev,
-                  currentPage: prev.currentPage - 1,
-                  templateData: templateDataBuilder(prev.itemsPerPage, prev.currentPage - 1),
-                }
-              })
-            }>
+            <li
+              onClick={() =>
+                setTemplateData((prev) => {
+                  return {
+                    ...prev,
+                    currentPage: prev.currentPage - 1,
+                    templateData: templateDataBuilder(prev.itemsPerPage, prev.currentPage - 1),
+                  }
+                })
+              }
+            >
               {`Prev`}
             </li>
 
@@ -217,7 +226,7 @@ function App() {
               return (
                 <li
                   key={pageIndex}
-                  className={`${templateData.currentPage === (pageIndex + 1) ? "active" : ""}`}
+                  className={`${templateData.currentPage === pageIndex + 1 ? "active" : ""}`}
                   onClick={() =>
                     setTemplateData((prev) => {
                       const currentPage = page + 1
@@ -233,27 +242,30 @@ function App() {
                 </li>
               )
             })}
-            <li onClick={() =>
-              setTemplateData((prev) => {
-                console.log(prev.currentPage);
-                return {
-                  ...prev,
-                  currentPage: prev.currentPage + 1,
-                  templateData: templateDataBuilder(prev.itemsPerPage, prev.currentPage + 1),
-                }
-              })
-            }>
+            <li
+              onClick={() =>
+                setTemplateData((prev) => {
+                  return {
+                    ...prev,
+                    currentPage: prev.currentPage + 1,
+                    templateData: templateDataBuilder(prev.itemsPerPage, prev.currentPage + 1),
+                  }
+                })
+              }
+            >
               {`Next`}
             </li>
-            <li onClick={() =>
-              setTemplateData((prev) => {
-                return {
-                  ...prev,
-                  currentPage: tableBody.length / table.noOfItems,
-                  templateData: templateDataBuilder(prev.itemsPerPage, tableBody.length / table.noOfItems),
-                }
-              })
-            }>
+            <li
+              onClick={() =>
+                setTemplateData((prev) => {
+                  return {
+                    ...prev,
+                    currentPage: tableBody.length / table.noOfItems,
+                    templateData: templateDataBuilder(prev.itemsPerPage, tableBody.length / table.noOfItems),
+                  }
+                })
+              }
+            >
               {`Last`}
             </li>
           </ul>
