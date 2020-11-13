@@ -1,93 +1,8 @@
 import "./App.css"
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { table } from "./placeholderData"
 
 function App() {
-  // Table JSON
-  const table = {
-    header: [
-      {
-        header_name: "s.no",
-        template_name: "sno",
-      },
-      {
-        header_name: "Name",
-        template_name: "name",
-      },
-      {
-        header_name: "Age",
-        template_name: "age",
-      },
-      {
-        header_name: "Gender",
-        template_name: "gender",
-      },
-      {
-        header_name: "Designation",
-        template_name: "designation",
-      },
-    ],
-    body: [
-      {
-        sno: 1,
-        name: "Eswaramoorthy karthikeyan",
-        age: 25,
-        gender: "Male",
-        designation: "Developer",
-      },
-      {
-        sno: 2,
-        name: "Gopinath",
-        age: 24,
-        gender: "Male",
-        designation: "CTO",
-      },
-      {
-        sno: 3,
-        name: "Allen paul",
-        age: 25,
-        gender: "Male",
-        designation: "CEO",
-      },
-      {
-        sno: 4,
-        name: "Jefferson Swartz",
-        age: 25,
-        gender: "Male",
-        designation: "CCO",
-      },
-      {
-        sno: 5,
-        name: "Eswaramoorthy karthikeyan",
-        age: 25,
-        gender: "Male",
-        designation: "Developer",
-      },
-      {
-        sno: 6,
-        name: "Gopinath",
-        age: 24,
-        gender: "Male",
-        designation: "CTO",
-      },
-      {
-        sno: 7,
-        name: "Allen paul",
-        age: 25,
-        gender: "Male",
-        designation: "CEO",
-      },
-      {
-        sno: 8,
-        name: "Jefferson Swartz",
-        age: 25,
-        gender: "Male",
-        designation: "CCO",
-      },
-    ],
-    noOfItems: 2,
-    currentPage: 1,
-  }
-
   //table header
   const tableHeader = table.header
 
@@ -100,23 +15,16 @@ function App() {
   const tableBody = table.body
 
   // initialState
-  const [templateData, setTemplateData] = useState(null)
+  const [templateData, setTemplateData] = useState({
+    itemsPerPage: table.noOfItems,
+    currentPage: 1,
+    templateData: table.body.slice(0, table.noOfItems),
+    noOfItems: table.noOfItems,
+    pagination: Array.from(Array(Math.ceil(tableBody.length / table.noOfItems)).keys()),
+  })
 
   const templateDataBuilder = (itemsPerPage, currentPage) =>
     table.body.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-
-  // onmount, apicall/loaddata,
-  useEffect(() => {
-    // this value can be directly given in useState
-    setTemplateData({
-      itemsPerPage: table.noOfItems,
-      currentPage: 1,
-      templateData: table.body.slice(0, table.noOfItems),
-      noOfItems: table.noOfItems,
-      pagination: Array.from(Array(Math.ceil(tableBody.length / table.noOfItems)).keys()),
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   // Jump to page function
 
@@ -133,8 +41,14 @@ function App() {
       })
   }
 
-  if (!templateData) {
-    return "initializing..."
+  const paginationOnClick = (currentPage, templateData) => {
+    setTemplateData((prev) => {
+      return {
+        ...prev,
+        currentPage,
+        templateData,
+      }
+    })
   }
 
   return (
@@ -185,38 +99,19 @@ function App() {
 
         <div className="filter-group">
           <div className="">
-            {`Showing ${templateData.currentPage * templateData.itemsPerPage - templateData.itemsPerPage + 1} 
-            to `}
-            {templateData.currentPage * templateData.itemsPerPage <= tableBody.length
-              ? templateData.currentPage * templateData.itemsPerPage
-              : tableBody.length}{" "}
-            {`of
-            ${tableBody.length}`}
+            {`Showing ${templateData.currentPage * templateData.itemsPerPage - templateData.itemsPerPage + 1} to ${
+              templateData.currentPage * templateData.itemsPerPage
+            } of ${tableBody.length}`}
           </div>
 
           <ul className="pagination-list">
+            <li onClick={() => paginationOnClick(1, templateDataBuilder(templateData.itemsPerPage, 1))}>{`First`}</li>
             <li
               onClick={() =>
-                setTemplateData((prev) => {
-                  return {
-                    ...prev,
-                    currentPage: 1,
-                    templateData: templateDataBuilder(prev.itemsPerPage, 1),
-                  }
-                })
-              }
-            >
-              {`First`}
-            </li>
-            <li
-              onClick={() =>
-                setTemplateData((prev) => {
-                  return {
-                    ...prev,
-                    currentPage: prev.currentPage - 1,
-                    templateData: templateDataBuilder(prev.itemsPerPage, prev.currentPage - 1),
-                  }
-                })
+                paginationOnClick(
+                  templateData.currentPage - 1,
+                  templateDataBuilder(templateData.itemsPerPage, templateData.currentPage - 1)
+                )
               }
             >
               {`Prev`}
@@ -227,16 +122,7 @@ function App() {
                 <li
                   key={pageIndex}
                   className={`${templateData.currentPage === pageIndex + 1 ? "active" : ""}`}
-                  onClick={() =>
-                    setTemplateData((prev) => {
-                      const currentPage = page + 1
-                      return {
-                        ...prev,
-                        currentPage: currentPage,
-                        templateData: templateDataBuilder(prev.itemsPerPage, currentPage),
-                      }
-                    })
-                  }
+                  onClick={() => paginationOnClick(page + 1, templateDataBuilder(templateData.itemsPerPage, page + 1))}
                 >
                   {`  ${page + 1} `}
                 </li>
@@ -244,26 +130,20 @@ function App() {
             })}
             <li
               onClick={() =>
-                setTemplateData((prev) => {
-                  return {
-                    ...prev,
-                    currentPage: prev.currentPage + 1,
-                    templateData: templateDataBuilder(prev.itemsPerPage, prev.currentPage + 1),
-                  }
-                })
+                paginationOnClick(
+                  templateData.currentPage + 1,
+                  templateDataBuilder(templateData.itemsPerPage, templateData.currentPage + 1)
+                )
               }
             >
               {`Next`}
             </li>
             <li
               onClick={() =>
-                setTemplateData((prev) => {
-                  return {
-                    ...prev,
-                    currentPage: tableBody.length / table.noOfItems,
-                    templateData: templateDataBuilder(prev.itemsPerPage, tableBody.length / table.noOfItems),
-                  }
-                })
+                paginationOnClick(
+                  tableBody.length / table.noOfItems,
+                  templateDataBuilder(templateData.itemsPerPage, tableBody.length / table.noOfItems)
+                )
               }
             >
               {`Last`}
