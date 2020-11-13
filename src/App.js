@@ -148,7 +148,8 @@ function App() {
               const itemsPerPage = parseInt(e.target.value)
               setTemplateData((prev) => {
                 return {
-                  ...prev,
+                  currentPage: 1,
+                  noOfItems: itemsPerPage,
                   itemsPerPage: itemsPerPage,
                   templateData: templateDataBuilder(itemsPerPage, prev.currentPage),
                   pagination: Array.from(Array(Math.ceil(tableBody.length / itemsPerPage)).keys()),
