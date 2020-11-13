@@ -121,7 +121,7 @@ function App() {
   // Jump to page function
 
   const jumptoPage = (event) => {
-    const targetValue = parseInt(event.target.value)
+    const targetValue = parseInt(event.target.value);
     targetValue &&
       targetValue !== templateData.currentPage &&
       setTemplateData((prev) => {
@@ -151,6 +151,7 @@ function App() {
                   ...prev,
                   itemsPerPage: itemsPerPage,
                   templateData: templateDataBuilder(itemsPerPage, prev.currentPage),
+                  pagination: Array.from(Array(Math.ceil(tableBody.length / itemsPerPage)).keys())
                 }
               })
             }}
