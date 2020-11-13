@@ -24,6 +24,11 @@
   box-shadow: 2px 2px 4px rgb(241 241 241);
 }
 
+.pagination-list li.active{
+  background: #dcffff;
+}
+
+
 .filter-group {
   display: flex;
   flex-direction: row;

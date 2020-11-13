@@ -190,10 +190,34 @@ function App() {
           </div>
 
           <ul className="pagination-list">
+            <li onClick={() =>
+              setTemplateData((prev) => {
+                return {
+                  ...prev,
+                  currentPage: 1,
+                  templateData: templateDataBuilder(prev.itemsPerPage, 1),
+                }
+              })
+            }>
+              {`First`}
+            </li>
+            <li onClick={() =>
+              setTemplateData((prev) => {
+                return {
+                  ...prev,
+                  currentPage: prev.currentPage - 1,
+                  templateData: templateDataBuilder(prev.itemsPerPage, prev.currentPage - 1),
+                }
+              })
+            }>
+              {`Prev`}
+            </li>
+
             {templateData.pagination.map((page, pageIndex) => {
               return (
                 <li
                   key={pageIndex}
+                  className={`${templateData.currentPage === (pageIndex + 1) ? "active" : ""}`}
                   onClick={() =>
                     setTemplateData((prev) => {
                       const currentPage = page + 1
@@ -209,6 +233,29 @@ function App() {
                 </li>
               )
             })}
+            <li onClick={() =>
+              setTemplateData((prev) => {
+                console.log(prev.currentPage);
+                return {
+                  ...prev,
+                  currentPage: prev.currentPage + 1,
+                  templateData: templateDataBuilder(prev.itemsPerPage, prev.currentPage + 1),
+                }
+              })
+            }>
+              {`Next`}
+            </li>
+            <li onClick={() =>
+              setTemplateData((prev) => {
+                return {
+                  ...prev,
+                  currentPage: tableBody.length / table.noOfItems,
+                  templateData: templateDataBuilder(prev.itemsPerPage, tableBody.length / table.noOfItems),
+                }
+              })
+            }>
+              {`Last`}
+            </li>
           </ul>
           <div className="">
             <input
