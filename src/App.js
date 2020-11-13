@@ -142,8 +142,11 @@ function App() {
 
         <div className="filter-group">
           <div className="">
-            {`Showing ${templateData.currentPage * templateData.itemsPerPage - templateData.itemsPerPage + 1} to ${
-              templateData.currentPage * templateData.itemsPerPage
+            {`Showing ${templateData.currentPage * templateData.itemsPerPage - templateData.itemsPerPage + 1} to 
+            ${
+              templateData.currentPage * templateData.itemsPerPage >= tableBody.length
+                ? tableBody.length
+                : templateData.currentPage * templateData.itemsPerPage
             } of ${tableBody.length} results`}
           </div>
 
