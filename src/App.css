@@ -24,10 +24,14 @@
   box-shadow: 2px 2px 4px rgb(241 241 241);
 }
 
-.pagination-list li.active{
+.pagination-list li.active {
   background: #dcffff;
 }
 
+li.disabled {
+  pointer-events: none;
+  background: #cdcdcd1f;
+}
 
 .filter-group {
   display: flex;

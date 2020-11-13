@@ -51,6 +51,32 @@ function App() {
     })
   }
 
+  const performSearch = (event) => {
+    let tableData = []
+    if (event.target.value) {
+      tableData = tableBody.filter((row) => {
+        let values = Object.values(row).map((v) => {
+          return ("" + v).toLowerCase()
+        })
+        let status = false
+        values.map((val) => {
+          return val.includes(event.target.value.toLowerCase()) ? (status = true) : null
+        })
+        return status
+      })
+    } else {
+      tableData = tableBody
+    }
+    setTemplateData((prev) => {
+      return {
+        ...prev,
+        currentPage: 1,
+        templateData: tableData.slice(0, prev.noOfItems),
+        pagination: Array.from(Array(Math.ceil(tableData.length / prev.noOfItems)).keys()),
+      }
+    })
+  }
+
   return (
     <div className="App">
       <div className="container">
@@ -77,7 +103,15 @@ function App() {
           </select>
 
           <div className="">
-            <input className="" type="text" name="search" id="search" placeholder="search" autoComplete="no" />
+            <input
+              className=""
+              type="text"
+              name="search"
+              id="search"
+              placeholder="search"
+              autoComplete="no"
+              onKeyUp={(e) => performSearch(e)}
+            />
           </div>
         </div>
         <table className="table" cellPadding="10px">
@@ -85,7 +119,14 @@ function App() {
             <tr>{Header}</tr>
           </thead>
           <tbody>
-            {templateData &&
+            {templateData.templateData.length === 0 ? (
+              <tr>
+                <td colSpan={tableHeader.length} style={{ textAlign: "center" }}>
+                  {`No results found`}
+                </td>
+              </tr>
+            ) : (
+              templateData &&
               templateData.templateData.map((bodyData, rowIndex) => {
                 return (
                   <tr key={rowIndex}>
@@ -94,7 +135,8 @@ function App() {
                     })}
                   </tr>
                 )
-              })}
+              })
+            )}
           </tbody>
         </table>
 
@@ -102,12 +144,16 @@ function App() {
           <div className="">
             {`Showing ${templateData.currentPage * templateData.itemsPerPage - templateData.itemsPerPage + 1} to ${
               templateData.currentPage * templateData.itemsPerPage
-            } of ${tableBody.length}`}
+            } of ${tableBody.length} results`}
           </div>
 
           <ul className="pagination-list">
-            <li onClick={() => paginationOnClick(1, templateDataBuilder(templateData.itemsPerPage, 1))}>{`First`}</li>
             <li
+              className={`${templateData.currentPage === 1 ? "disabled" : ""}`}
+              onClick={() => paginationOnClick(1, templateDataBuilder(templateData.itemsPerPage, 1))}
+            >{`First`}</li>
+            <li
+              className={`${templateData.currentPage === 1 ? "disabled" : ""}`}
               onClick={() =>
                 paginationOnClick(
                   templateData.currentPage - 1,
@@ -130,6 +176,7 @@ function App() {
               )
             })}
             <li
+              className={`${templateData.currentPage === tableBody.length / table.noOfItems ? "disabled" : ""}`}
               onClick={() =>
                 paginationOnClick(
                   templateData.currentPage + 1,
@@ -140,10 +187,11 @@ function App() {
               {`Next`}
             </li>
             <li
+              className={`${templateData.currentPage === tableBody.length / table.noOfItems ? "disabled" : ""}`}
               onClick={() =>
                 paginationOnClick(
                   tableBody.length / table.noOfItems,
-                  templateDataBuilder(templateData.itemsPerPage, tableBody.length / table.noOfItems)
+                  templateDataBuilder(templateData.itemsPerPage, `${tableBody.length / table.noOfItems}`)
                 )
               }
             >
