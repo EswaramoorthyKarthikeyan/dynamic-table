@@ -96,7 +96,7 @@ function App() {
                   currentPage: 1,
                   noOfItems: itemsPerPage,
                   itemsPerPage: itemsPerPage,
-                  templateData: templateDataBuilder(itemsPerPage, prev.currentPage),
+                  templateData: templateDataBuilder(itemsPerPage, 1),
                   pagination: Array.from(Array(Math.ceil(filterData.length / itemsPerPage)).keys()),
                 }
               })
@@ -184,7 +184,9 @@ function App() {
               )
             })}
             <li
-              className={`${templateData.currentPage === filterData.length / table.noOfItems ? "disabled" : ""}`}
+              className={`${
+                templateData.currentPage === Math.ceil(filterData.length / templateData.noOfItems) ? "disabled" : ""
+              }`}
               onClick={() =>
                 paginationOnClick(
                   templateData.currentPage + 1,
@@ -195,11 +197,13 @@ function App() {
               {`Next`}
             </li>
             <li
-              className={`${templateData.currentPage === filterData.length / table.noOfItems ? "disabled" : ""}`}
+              className={`${
+                templateData.currentPage === Math.ceil(filterData.length / templateData.noOfItems) ? "disabled" : ""
+              }`}
               onClick={() =>
                 paginationOnClick(
-                  filterData.length / table.noOfItems,
-                  templateDataBuilder(templateData.itemsPerPage, `${filterData.length / table.noOfItems}`)
+                  Math.ceil(filterData.length / templateData.noOfItems),
+                  templateDataBuilder(templateData.itemsPerPage, Math.ceil(filterData.length / templateData.noOfItems))
                 )
               }
             >
