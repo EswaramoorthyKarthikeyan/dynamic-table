@@ -68,6 +68,25 @@ li.disabled {
   padding: 15px;
 }
 
+.table th span {
+  display: none;
+}
+.table th span.active {
+  display: inline-block;
+  font-weight: 300;
+  margin-left: 10px;
+  font-size: 14px;
+  vertical-align: -2px;
+}
+
+.table th span.active.Asc {
+  transform: rotate(90deg);
+}
+
+.table th span.active.Dec {
+  transform: rotate(270deg);
+}
+
 .table tr {
   border-bottom: 1px solid #efefef;
   box-shadow: 0px 2px 0px 0px rgb(228 228 228 / 18%);

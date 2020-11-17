@@ -100,6 +100,7 @@ export const table = {
       designation: "CCO",
     },
   ],
-  noOfItems: 2,
+  itemsPerPage: 2,
   currentPage: 1,
+  defaultSort: 0,
 }

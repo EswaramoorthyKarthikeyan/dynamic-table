@@ -6,23 +6,27 @@ function App() {
   //table header
   const tableHeader = table.header
 
-  //Header template rendering
-  const Header = tableHeader.map((header, headerIndex) => {
-    return <th key={headerIndex}>{header.header_name}</th>
-  })
-
-  //table body
-  const tableBody = table.body
-
-  const [filterData, setFilterData] = useState(tableBody)
+  const [filterData, setFilterData] = useState(table.body)
 
   // initialState
   const [templateData, setTemplateData] = useState({
-    itemsPerPage: table.noOfItems,
+    itemsPerPage: table.itemsPerPage,
     currentPage: 1,
-    templateData: filterData.slice(0, table.noOfItems),
-    noOfItems: table.noOfItems,
-    pagination: Array.from(Array(Math.ceil(filterData.length / table.noOfItems)).keys()),
+    templateData: filterData.slice(0, table.itemsPerPage),
+    pagination: Array.from(Array(Math.ceil(filterData.length / table.itemsPerPage)).keys()),
+    sortIndex: [table.defaultSort, "Asc"],
+  })
+
+  //Header template rendering
+  const Header = tableHeader.map((header, headerIndex) => {
+    return (
+      <th key={headerIndex} onClick={() => sort(headerIndex)}>
+        {header.header_name}
+        <span className={`${headerIndex === templateData.sortIndex[0] ? "active" : ""} ${templateData.sortIndex[1]}`}>
+          {`>`}
+        </span>
+      </th>
+    )
   })
 
   const templateDataBuilder = (itemsPerPage, currentPage) =>
@@ -53,10 +57,44 @@ function App() {
     })
   }
 
+  function dynamicSort(property) {
+    var sortOrder = 1
+    if (property[0] === "-") {
+      sortOrder = -1
+      property = property.substr(1)
+    }
+    return function (a, b) {
+      /* next line works with strings and numbers,
+       * and you may want to customize it to your needs
+       */
+      let result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0
+      return result * sortOrder
+    }
+  }
+
+  const sort = (index) => {
+    let sortType = ""
+    if (index === templateData.sortIndex[0] && templateData.sortIndex[1] === "Asc") {
+      filterData.sort(dynamicSort(table.header[index]["template_name"])).reverse()
+      sortType = "Dec"
+    } else {
+      filterData.sort(dynamicSort(table.header[index]["template_name"]))
+      sortType = "Asc"
+    }
+
+    setTemplateData((prev) => {
+      return {
+        ...prev,
+        templateData: templateDataBuilder(prev.itemsPerPage, prev.currentPage),
+        sortIndex: [index, sortType],
+      }
+    })
+  }
+
   const performSearch = (event) => {
     let tableData = []
     if (event.target.value) {
-      tableData = tableBody.filter((row) => {
+      tableData = filterData.filter((row) => {
         let values = Object.values(row).map((v) => {
           return ("" + v).toLowerCase()
         })
@@ -67,7 +105,7 @@ function App() {
         return status
       })
     } else {
-      tableData = tableBody
+      tableData = table.body
     }
 
     setFilterData(tableData)
@@ -76,8 +114,8 @@ function App() {
       return {
         ...prev,
         currentPage: 1,
-        templateData: tableData.slice(0, prev.noOfItems),
-        pagination: Array.from(Array(Math.ceil(tableData.length / prev.noOfItems)).keys()),
+        templateData: tableData.slice(0, prev.itemsPerPage),
+        pagination: Array.from(Array(Math.ceil(tableData.length / prev.itemsPerPage)).keys()),
       }
     })
   }
@@ -97,8 +135,8 @@ function App() {
               const itemsPerPage = parseInt(e.target.value)
               setTemplateData((prev) => {
                 return {
+                  ...prev,
                   currentPage: 1,
-                  noOfItems: itemsPerPage,
                   itemsPerPage: itemsPerPage,
                   templateData: templateDataBuilder(itemsPerPage, 1),
                   pagination: Array.from(Array(Math.ceil(filterData.length / itemsPerPage)).keys()),
@@ -191,7 +229,7 @@ function App() {
             })}
             <li
               className={`${
-                templateData.currentPage === Math.ceil(filterData.length / templateData.noOfItems) ? "disabled" : ""
+                templateData.currentPage === Math.ceil(filterData.length / templateData.itemsPerPage) ? "disabled" : ""
               }`}
               onClick={() =>
                 paginationOnClick(
@@ -204,12 +242,15 @@ function App() {
             </li>
             <li
               className={`${
-                templateData.currentPage === Math.ceil(filterData.length / templateData.noOfItems) ? "disabled" : ""
+                templateData.currentPage === Math.ceil(filterData.length / templateData.itemsPerPage) ? "disabled" : ""
               }`}
               onClick={() =>
                 paginationOnClick(
-                  Math.ceil(filterData.length / templateData.noOfItems),
-                  templateDataBuilder(templateData.itemsPerPage, Math.ceil(filterData.length / templateData.noOfItems))
+                  Math.ceil(filterData.length / templateData.itemsPerPage),
+                  templateDataBuilder(
+                    templateData.itemsPerPage,
+                    Math.ceil(filterData.length / templateData.itemsPerPage)
+                  )
                 )
               }
             >
@@ -223,7 +264,7 @@ function App() {
               id="jump_to_page"
               value={templateData.currentPage}
               onChange={(e) => jumptoPage(e)}
-              max={filterData.length / table.noOfItems}
+              max={filterData.length / templateData.itemsPerPage}
               min="1"
               placeholder="Jump to page"
             />
