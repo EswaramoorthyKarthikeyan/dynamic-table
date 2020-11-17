@@ -14,17 +14,19 @@ function App() {
   //table body
   const tableBody = table.body
 
+  const [filterData, setFilterData] = useState(tableBody)
+
   // initialState
   const [templateData, setTemplateData] = useState({
     itemsPerPage: table.noOfItems,
     currentPage: 1,
-    templateData: table.body.slice(0, table.noOfItems),
+    templateData: filterData.slice(0, table.noOfItems),
     noOfItems: table.noOfItems,
-    pagination: Array.from(Array(Math.ceil(tableBody.length / table.noOfItems)).keys()),
+    pagination: Array.from(Array(Math.ceil(filterData.length / table.noOfItems)).keys()),
   })
 
   const templateDataBuilder = (itemsPerPage, currentPage) =>
-    table.body.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+    filterData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 
   // Jump to page function
 
@@ -67,6 +69,9 @@ function App() {
     } else {
       tableData = tableBody
     }
+
+    setFilterData(tableData)
+
     setTemplateData((prev) => {
       return {
         ...prev,
@@ -92,7 +97,7 @@ function App() {
                   noOfItems: itemsPerPage,
                   itemsPerPage: itemsPerPage,
                   templateData: templateDataBuilder(itemsPerPage, prev.currentPage),
-                  pagination: Array.from(Array(Math.ceil(tableBody.length / itemsPerPage)).keys()),
+                  pagination: Array.from(Array(Math.ceil(filterData.length / itemsPerPage)).keys()),
                 }
               })
             }}
@@ -105,12 +110,12 @@ function App() {
           <div className="">
             <input
               className=""
-              type="text"
+              type="search"
               name="search"
               id="search"
               placeholder="search"
               autoComplete="no"
-              onKeyUp={(e) => performSearch(e)}
+              onChange={(e) => performSearch(e)}
             />
           </div>
         </div>
@@ -144,13 +149,13 @@ function App() {
           <div className="">
             {`Showing ${templateData.currentPage * templateData.itemsPerPage - templateData.itemsPerPage + 1} to 
             ${
-              templateData.currentPage * templateData.itemsPerPage >= tableBody.length
-                ? tableBody.length
+              templateData.currentPage * templateData.itemsPerPage >= filterData.length
+                ? filterData.length
                 : templateData.currentPage * templateData.itemsPerPage
-            } of ${tableBody.length} results`}
+            } of ${filterData.length} results`}
           </div>
 
-          <ul className="pagination-list">
+          <ul className={`${templateData.pagination.length <= 1 ? "pagination-list hide" : "pagination-list"}`}>
             <li
               className={`${templateData.currentPage === 1 ? "disabled" : ""}`}
               onClick={() => paginationOnClick(1, templateDataBuilder(templateData.itemsPerPage, 1))}
@@ -179,7 +184,7 @@ function App() {
               )
             })}
             <li
-              className={`${templateData.currentPage === tableBody.length / table.noOfItems ? "disabled" : ""}`}
+              className={`${templateData.currentPage === filterData.length / table.noOfItems ? "disabled" : ""}`}
               onClick={() =>
                 paginationOnClick(
                   templateData.currentPage + 1,
@@ -190,11 +195,11 @@ function App() {
               {`Next`}
             </li>
             <li
-              className={`${templateData.currentPage === tableBody.length / table.noOfItems ? "disabled" : ""}`}
+              className={`${templateData.currentPage === filterData.length / table.noOfItems ? "disabled" : ""}`}
               onClick={() =>
                 paginationOnClick(
-                  tableBody.length / table.noOfItems,
-                  templateDataBuilder(templateData.itemsPerPage, `${tableBody.length / table.noOfItems}`)
+                  filterData.length / table.noOfItems,
+                  templateDataBuilder(templateData.itemsPerPage, `${filterData.length / table.noOfItems}`)
                 )
               }
             >
@@ -208,7 +213,7 @@ function App() {
               id="jump_to_page"
               value={templateData.currentPage}
               onChange={(e) => jumptoPage(e)}
-              max={tableBody.length / table.noOfItems}
+              max={filterData.length / table.noOfItems}
               min="1"
               placeholder="Jump to page"
             />
