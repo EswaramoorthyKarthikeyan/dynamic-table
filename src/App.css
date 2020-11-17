@@ -14,6 +14,10 @@
   margin: 0;
 }
 
+.pagination-list.hide {
+  display: none;
+}
+
 .pagination-list li {
   display: inline-block;
   padding: 3px 10px;
@@ -24,10 +28,21 @@
   box-shadow: 2px 2px 4px rgb(241 241 241);
 }
 
-.pagination-list li.active{
+.pagination-list li.show {
+  display: inline-block;
+}
+.pagination-list li.hide {
+  display: none;
+}
+
+.pagination-list li.active {
   background: #dcffff;
 }
 
+li.disabled {
+  pointer-events: none;
+  background: #cdcdcd1f;
+}
 
 .filter-group {
   display: flex;
@@ -51,6 +66,25 @@
   text-align: left;
   background: #ccffff1f;
   padding: 15px;
+}
+
+.table th span {
+  display: none;
+}
+.table th span.active {
+  display: inline-block;
+  font-weight: 300;
+  margin-left: 10px;
+  font-size: 14px;
+  vertical-align: -2px;
+}
+
+.table th span.active.Asc {
+  transform: rotate(90deg);
+}
+
+.table th span.active.Dec {
+  transform: rotate(270deg);
 }
 
 .table tr {
