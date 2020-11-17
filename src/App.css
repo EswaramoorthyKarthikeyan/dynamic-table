@@ -28,6 +28,13 @@
   box-shadow: 2px 2px 4px rgb(241 241 241);
 }
 
+.pagination-list li.show {
+  display: inline-block;
+}
+.pagination-list li.hide {
+  display: none;
+}
+
 .pagination-list li.active {
   background: #dcffff;
 }

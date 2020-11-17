@@ -82,6 +82,10 @@ function App() {
     })
   }
 
+  // Pagination ellipsis
+  const showPage = (currentPage, pageIndex) => {
+    return pageIndex <= currentPage + 2 && pageIndex >= currentPage - 2 ? true : false
+  }
   return (
     <div className="App">
       <div className="container">
@@ -176,7 +180,9 @@ function App() {
               return (
                 <li
                   key={pageIndex}
-                  className={`${templateData.currentPage === pageIndex + 1 ? "active" : ""}`}
+                  className={`${templateData.currentPage === pageIndex + 1 ? "active" : ""} ${
+                    showPage(templateData.currentPage, pageIndex + 1) ? "show" : "hide"
+                  }`}
                   onClick={() => paginationOnClick(page + 1, templateDataBuilder(templateData.itemsPerPage, page + 1))}
                 >
                   {`  ${page + 1} `}
