@@ -1,7 +1,6 @@
 .App {
   height: 100vh;
   display: flex;
-  align-items: center;
 }
 
 .container {
@@ -26,6 +25,9 @@
   cursor: pointer;
   border-radius: 5px;
   box-shadow: 2px 2px 4px rgb(241 241 241);
+}
+.pagination-list li.spacer {
+  pointer-events: none;
 }
 
 .pagination-list li.show {
