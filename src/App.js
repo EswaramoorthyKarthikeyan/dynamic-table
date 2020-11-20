@@ -93,8 +93,10 @@ function App() {
 
   const performSearch = (event) => {
     let tableData = []
+
     if (event.target.value) {
-      tableData = filterData.filter((row) => {
+      let Data = filterData.length > 0 ? filterData : table.body
+      tableData = Data.filter((row) => {
         let values = Object.values(row).map((v) => {
           return ("" + v).toLowerCase()
         })
@@ -122,7 +124,7 @@ function App() {
 
   // Pagination ellipsis
   const showPage = (currentPage, pageIndex) => {
-    return pageIndex <= currentPage + 2 && pageIndex >= currentPage - 2 ? true : false
+    return pageIndex <= currentPage + 1 && pageIndex >= currentPage - 1 ? true : false
   }
   return (
     <div className="App">
@@ -147,6 +149,7 @@ function App() {
             <option value="1"> 1 </option>
             <option value="2"> 2 </option>
             <option value="5"> 5 </option>
+            <option value="10"> 10 </option>
           </select>
 
           <div className="">
@@ -213,7 +216,11 @@ function App() {
             >
               {`Prev`}
             </li>
-
+            <li
+              className={`spacer ${templateData.currentPage === 1 || templateData.currentPage === 2 ? "hide" : "show"}`}
+            >
+              <span>...</span>
+            </li>
             {templateData.pagination.map((page, pageIndex) => {
               return (
                 <li
@@ -227,6 +234,16 @@ function App() {
                 </li>
               )
             })}
+            <li
+              className={`spacer ${
+                templateData.currentPage === templateData.pagination.length ||
+                templateData.currentPage === templateData.pagination.length - 1
+                  ? "hide"
+                  : "show"
+              }`}
+            >
+              <span>...</span>
+            </li>
             <li
               className={`${
                 templateData.currentPage === Math.ceil(filterData.length / templateData.itemsPerPage) ? "disabled" : ""
@@ -257,6 +274,7 @@ function App() {
               {`Last`}
             </li>
           </ul>
+
           <div className="">
             <input
               type="number"
@@ -264,7 +282,7 @@ function App() {
               id="jump_to_page"
               value={templateData.currentPage}
               onChange={(e) => jumptoPage(e)}
-              max={filterData.length / templateData.itemsPerPage}
+              max={Math.ceil(filterData.length / templateData.itemsPerPage)}
               min="1"
               placeholder="Jump to page"
             />
