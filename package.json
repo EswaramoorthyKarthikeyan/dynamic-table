@@ -17,7 +17,8 @@
     "react-dom": "^17.0.1"
   },
   "scripts": {
-    "build": "rimraf lib/ && babel src -d lib/"
+    "build": "rimraf lib/ && babel src -d lib/",
+    "start": "rimraf lib/ && babel src --watch -d lib/"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@babel/cli": "^7.12.7",
     "@babel/core": "^7.12.7",
+    "@babel/preset-env": "^7.12.7",
     "@babel/preset-react": "^7.12.7",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2"
