@@ -1,3 +1,5 @@
+import React from "react"
+
 function ItemsPerPage({ data, jumpEvent }) {
   const itemPerPage = (event) => {
     jumpEvent(parseInt(event.target.value))

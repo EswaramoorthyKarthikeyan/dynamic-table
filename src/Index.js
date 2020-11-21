@@ -1,12 +1,14 @@
+import React from "react"
+import ReactDOM from "react-dom"
 import "./index.css"
 import { useState } from "react"
 import { table } from "./placeholderData"
-import Pagination from "./components/pagination/pagination"
-import ItemsPerPage from "./components/itemsperpage/itemperpage"
-import Search from "./components/search/search"
-import PageInfo from "./components/pageinfo/pageinfo"
-import JumpToPage from "./components/jumptopage/jumptopage"
-import Table from "./components/table/table"
+import Pagination from "./components/pagination/Pagination"
+import ItemsPerPage from "./components/itemsperpage/Itemperpage"
+import Search from "./components/search/Search"
+import PageInfo from "./components/pageinfo/Pageinfo"
+import JumpToPage from "./components/jumptopage/Jumptopage"
+import Table from "./components/table/Table"
 
 function App() {
   // initialState

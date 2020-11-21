@@ -1,3 +1,5 @@
+import React from "react"
+
 function JumpToPage({ templateData, jumpPage }) {
   const jumptoPage = (e) => jumpPage(parseInt(e.target.value))
 

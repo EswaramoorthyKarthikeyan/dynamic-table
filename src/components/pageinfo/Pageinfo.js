@@ -1,3 +1,5 @@
+import React from "react"
+
 function PageInfo({ templateData }) {
   return (
     <div className="">

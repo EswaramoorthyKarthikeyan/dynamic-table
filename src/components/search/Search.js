@@ -1,3 +1,5 @@
+import React from "react"
+
 function Search({ searchFunction, templateData, table }) {
   const search = (e) => {
     let tableData = []

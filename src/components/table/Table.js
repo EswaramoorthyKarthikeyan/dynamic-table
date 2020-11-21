@@ -1,4 +1,6 @@
+import React from "react"
 import "./table.css"
+
 function Table({ header, tableData, sortFn }) {
   // Dynamic sort function
   const dynamicSort = (property) => {

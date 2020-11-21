@@ -1,3 +1,5 @@
+import React from "react"
+
 import "./pagination.css"
 
 const Pagination = ({ data, paginationFn }) => {
