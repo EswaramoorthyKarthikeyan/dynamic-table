@@ -1,17 +1,99 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import "./index.css"
+import { useState } from "react"
+import { table } from "./placeholderData"
+import Pagination from "./components/pagination/pagination"
+import ItemsPerPage from "./components/itemsperpage/itemperpage"
+import Search from "./components/search/search"
+import PageInfo from "./components/pageinfo/pageinfo"
+import JumpToPage from "./components/jumptopage/jumptopage"
+import Table from "./components/table/table"
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+function App() {
+  // initialState
+  const [templateData, setTemplateData] = useState({
+    tableBody: table.body,
+    itemsPerPage: table.itemsPerPage,
+    currentPage: 1,
+    templateData: table.body.slice(0, table.itemsPerPage),
+    pagination: Array.from(Array(Math.ceil(table.body.length / table.itemsPerPage)).keys()),
+    sortIndex: [table.defaultSort, "Asc"],
+  })
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  // Template builder based on itemper page
+  const templateDataBuilder = (itemsPerPage, currentPage) =>
+    templateData.tableBody.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+
+  // Jump to page function
+  const jumptoPage = (event) => {
+    setTemplateData((prev) => {
+      return {
+        ...prev,
+        currentPage: 1,
+        itemsPerPage: event,
+        pagination: Array.from(Array(Math.ceil(templateData.tableBody.length / event)).keys()),
+        templateData: templateDataBuilder(event, 1),
+      }
+    })
+  }
+
+  const paginationOnClick = (currentPage) =>
+    setTemplateData((prev) => {
+      return {
+        ...prev,
+        currentPage,
+        templateData: templateDataBuilder(templateData.itemsPerPage, currentPage),
+      }
+    })
+
+  const performSearch = (tableData) => {
+    setTemplateData((prev) => {
+      return {
+        ...prev,
+        tableBody: tableData,
+        currentPage: 1,
+        templateData: tableData.slice(0, prev.itemsPerPage),
+        pagination: Array.from(Array(Math.ceil(tableData.length / prev.itemsPerPage)).keys()),
+      }
+    })
+  }
+
+  const sortFunction = (index, sortType, data) => {
+    setTemplateData((prev) => {
+      return {
+        ...prev,
+        tableBody: data,
+        templateData: templateDataBuilder(prev.itemsPerPage, prev.currentPage),
+        sortIndex: [index, sortType],
+      }
+    })
+  }
+
+  return (
+    <div className="App">
+      <div className="container">
+        <h3>Dynamic table</h3>
+
+        <div className="filter-group">
+          {/* Item per page */}
+          <ItemsPerPage data={templateData} jumpEvent={jumptoPage} />
+          {/* search */}
+          <Search searchFunction={performSearch} templateData={templateData} table={table} />
+        </div>
+        {/* table */}
+        <Table header={table.header} tableData={templateData} sortFn={sortFunction} />
+
+        <div className="filter-group">
+          {/* Page info */}
+          <PageInfo templateData={templateData} />
+
+          {/* Pagination */}
+          <Pagination data={templateData} paginationFn={paginationOnClick} />
+
+          {/* Jump to page */}
+          <JumpToPage templateData={templateData} jumpPage={paginationOnClick} />
+        </div>
+      </div>
+    </div>
+  )
+}
+export default App
