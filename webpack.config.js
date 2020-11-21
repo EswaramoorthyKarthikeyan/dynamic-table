@@ -15,7 +15,7 @@ module.exports = {
       {
         test: /\.css$/i,
         include: includeFolder,
-        use: ["css-loader"],
+        use: ["style-loader", "css-loader"],
       },
       {
         // also added typescript files for future
