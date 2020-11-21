@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "rimraf lib && webpack",
-    "start": "rimraf lib/ && babel src --watch -d lib/"
+    "start": "rimraf lib/ && webpack --env mode=dev --watch"
   },
   "eslintConfig": {
     "extends": [
@@ -38,7 +38,7 @@
       "last 1 safari version"
     ]
   },
-  "license": "GPL3",
+  "license": "GPL-3.0-or-later",
   "author": {
     "name": "Eswaramoorthy Karthikeyan",
     "email": "eswarkarthik95@gmail.com",
