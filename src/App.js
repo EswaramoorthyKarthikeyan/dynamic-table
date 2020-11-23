@@ -24,14 +24,14 @@ function App() {
     templateData.tableBody.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 
   // Jump to page function
-  const jumptoPage = (event) => {
+  const jumptoPage = (itemPerPage) => {
     setTemplateData((prev) => {
       return {
         ...prev,
         currentPage: 1,
-        itemsPerPage: event,
-        pagination: Array.from(Array(Math.ceil(templateData.tableBody.length / event)).keys()),
-        templateData: templateDataBuilder(event, 1),
+        itemsPerPage: itemPerPage,
+        pagination: Array.from(Array(Math.ceil(templateData.tableBody.length / itemPerPage)).keys()),
+        templateData: templateDataBuilder(itemPerPage, 1),
       }
     })
   }
