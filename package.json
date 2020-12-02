@@ -1,6 +1,6 @@
 {
   "name": "dynamic-table-react",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "dynamic table component for react",
   "main": "lib/index.js",
   "repository": {
