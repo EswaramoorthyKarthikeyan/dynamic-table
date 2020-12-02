@@ -7,7 +7,7 @@ module.exports = (env, argv) => {
   console.log(`running in ${mode} mode`)
 
   return {
-    entry: "./src/Index.js",
+    entry: "./src/Index.tsx",
     mode,
     output: {
       filename: "index.js",
@@ -35,6 +35,9 @@ module.exports = (env, argv) => {
     externals: {
       react: "react",
       "react-dom": "react-dom",
+    },
+    resolve: {
+      extensions: [".js", ".jsx", ".ts", ".tsx"],
     },
   }
 }

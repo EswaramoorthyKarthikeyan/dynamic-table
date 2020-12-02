@@ -1,6 +1,6 @@
 import React from "react"
 
-import "./pagination.css"
+import "./css/pagination.css"
 
 const Pagination = ({ data, paginationFn }) => {
   //   paginatioln click function
