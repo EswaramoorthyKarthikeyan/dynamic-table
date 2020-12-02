@@ -3,9 +3,9 @@ import "./index.css"
 import { useState } from "react"
 import { table } from "./placeholderData"
 
-import {ItemsPerPage, JumpToPage, PageInfo, Pagination, Search, Table} from "./components/"
+import { ItemsPerPage, JumpToPage, PageInfo, Pagination, Search, Table } from "./components/"
 
-function App() {
+function App(props) {
   // initialState
   const [templateData, setTemplateData] = useState({
     tableBody: table.body,
@@ -65,6 +65,10 @@ function App() {
     })
   }
 
+  const emitAction = (action) => {
+    props.emitFn(action)
+  }
+
   return (
     <div className="App">
       <div className="container">
@@ -77,7 +81,7 @@ function App() {
           <Search searchFunction={performSearch} templateData={templateData} table={table} />
         </div>
         {/* table */}
-        <Table header={table.header} tableData={templateData} sortFn={sortFunction} />
+        <Table header={table.header} tableData={templateData} sortFn={sortFunction} emitFn={emitAction} />
 
         <div className="filter-group">
           {/* Page info */}

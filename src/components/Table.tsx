@@ -1,7 +1,7 @@
 import React from "react"
 import "./css/table.css"
 
-function Table({ header, tableData, sortFn }) {
+function Table({ header, tableData, sortFn, emitFn }) {
   // Dynamic sort function
   const dynamicSort = (property) => {
     var sortOrder = 1
@@ -9,7 +9,7 @@ function Table({ header, tableData, sortFn }) {
       sortOrder = -1
       property = property.substr(1)
     }
-    return function (a, b) {
+    return (a, b) => {
       let result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0
       return result * sortOrder
     }
@@ -28,10 +28,18 @@ function Table({ header, tableData, sortFn }) {
     sortFn(index, sortType, tableData.tableBody)
   }
 
+  const emitAction = (emitVal) => {
+    return emitFn(emitVal)
+  }
+
   //Header template rendering
   const Header = header.map((header, headerIndex) => {
     return (
-      <th key={headerIndex} onClick={() => sort(headerIndex)}>
+      <th
+        key={headerIndex}
+        onClick={() => sort(headerIndex)}
+        className={`${header.type === "action" ? "text-center" : ""}`}
+      >
         {header.header_name}
         <span className={`${headerIndex === tableData.sortIndex[0] ? "active" : ""} ${tableData.sortIndex[1]}`}>
           {`>`}
@@ -58,7 +66,29 @@ function Table({ header, tableData, sortFn }) {
             return (
               <tr key={rowIndex}>
                 {header.map((head, dataIndex) => {
-                  return <td key={`${rowIndex}${dataIndex}`}> {bodyData[head.template_name]} </td>
+                  if (head?.type === "action")
+                    return (
+                      <td key={`${rowIndex}${dataIndex}`} style={{ textAlign: "center" }}>
+                        {bodyData[head.template_name].map((action, actionIndex) => {
+                          return (
+                            <a
+                              href="#javascript"
+                              key={actionIndex}
+                              className="action-link"
+                              onClick={() =>
+                                emitAction({
+                                  type: action,
+                                  value: bodyData.action_val,
+                                })
+                              }
+                            >
+                              {action}
+                            </a>
+                          )
+                        })}
+                      </td>
+                    )
+                  else return <td key={`${rowIndex}${dataIndex}`}> {bodyData[head.template_name]} </td>
                 })}
               </tr>
             )

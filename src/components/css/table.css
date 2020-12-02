@@ -10,6 +10,10 @@
   padding: 15px;
 }
 
+.table th.text-center {
+  text-align: center;
+}
+
 .table th span {
   display: none;
 }
@@ -42,4 +46,8 @@
 .table td {
   cursor: pointer;
   padding: 20px;
+}
+
+.table td a.action-link {
+  margin: 0 5px;
 }
